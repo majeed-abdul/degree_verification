@@ -1,4 +1,4 @@
-import 'package:degree_verification/home.dart';
+import 'package:degree_verification/home_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -11,10 +11,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData.dark(
+      theme: ThemeData(
         useMaterial3: true,
       ),
-      home: const HomePage(),
+      // home: const HomePage(),
+      initialRoute: HomePage.id,
+      routes: {
+        HomePage.id: (context) => const HomePage(),
+      },
     );
   }
 }
