@@ -13,8 +13,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         useMaterial3: true,
+        primarySwatch: Colors.grey,
       ),
-      // home: const HomePage(),
       initialRoute: HomePage.id,
       routes: {
         HomePage.id: (context) => const HomePage(),
