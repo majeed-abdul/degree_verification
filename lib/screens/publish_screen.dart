@@ -153,10 +153,9 @@ class _PublishScreenState extends State<PublishScreen> {
                         (i) => int.parse(dataHash.substring(i * 2, i * 2 + 2),
                             radix: 16));
                     String sig = signature(privKey, hash).toString();
-
-                    var result =
-                        verify(pubKey, hash, Signature.fromASN1Hex(sig));
-                    debugPrint(result.toString());
+                    // var result =
+                    //     verify(pubKey, hash, Signature.fromASN1Hex(sig));
+                    // debugPrint(result.toString());
                     debugPrint(sig.toString());
                     popUpDialoge(context);
                   },
