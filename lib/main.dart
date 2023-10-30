@@ -1,4 +1,5 @@
-import 'package:degree_verification/home_screen.dart';
+import 'package:degree_verification/screens/home_screen.dart';
+import 'package:degree_verification/screens/publish_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -11,13 +12,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
-        primarySwatch: Colors.grey,
+        primarySwatch: Colors.amber,
       ),
       initialRoute: HomePage.id,
       routes: {
         HomePage.id: (context) => const HomePage(),
+        PublishScreen.id: (context) => const PublishScreen(),
       },
     );
   }
