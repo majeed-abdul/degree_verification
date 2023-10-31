@@ -55,29 +55,9 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
             const Spacer(flex: 5),
-            // Text(
-            //   data1,
-            //   style: const TextStyle(fontSize: 16),
-            //   textAlign: TextAlign.center,
-            // ),
-            // const Spacer(),
-            // Text(
-            //   data2,
-            //   style: const TextStyle(fontSize: 16),
-            //   textAlign: TextAlign.center,
-            // ),
-            // const Spacer(),
           ],
         ),
       ),
     );
   }
-
-  // generateKeys() async {
-  //   var ec = getP256();
-  //   var priv = ec.generatePrivateKey();
-  //   var pub = priv.publicKey;
-  //   print(priv);
-  //   print(pub);
-  // }
 }

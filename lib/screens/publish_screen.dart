@@ -16,9 +16,6 @@ class PublishScreen extends StatefulWidget {
 }
 
 class _PublishScreenState extends State<PublishScreen> {
-  String testSig =
-      "b83380f6e1d09411ebf49afd1a95c738686bfb2b0fe2391134f4ae3d6d77b78a6c305afcac930a3ea1721c04d8a1a979016baae011319746323a756fbaee1811";
-
   TextEditingController controllerName = TextEditingController();
   TextEditingController controllerFName = TextEditingController();
   TextEditingController controllerDOB = TextEditingController();
@@ -30,14 +27,15 @@ class _PublishScreenState extends State<PublishScreen> {
   TextEditingController controllerIssueDate = TextEditingController();
   TextEditingController controllerObtainedCgpa = TextEditingController();
   TextEditingController controllerTotalCgpa = TextEditingController();
+  bool _spinning = false;
   late String finalText;
   late String dataHash;
-  late bool result;
+  late bool verified;
   late String sig;
   @override
   Widget build(BuildContext context) {
     return Spinner(
-      spinning: false,
+      spinning: _spinning,
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
@@ -152,9 +150,8 @@ class _PublishScreenState extends State<PublishScreen> {
                         (i) => int.parse(dataHash.substring(i * 2, i * 2 + 2),
                             radix: 16));
                     sig = signature(privKey, hash).toString();
-                    result = verify(pubKey, hash, Signature.fromASN1Hex(sig));
-                    // debugPrint(result.toString());
-                    debugPrint(sig.toString());
+                    verified = verify(pubKey, hash, Signature.fromASN1Hex(sig));
+                    // debugPrint(sig.toString());
                     popUpDialoge(context);
                   },
                   child: const Padding(
@@ -171,18 +168,12 @@ class _PublishScreenState extends State<PublishScreen> {
     );
   }
 
-  Future<void> push(String targetAddress) async {
-    List<dynamic> result = await query("upload", ["5tre64tyre5"]);
+  Future<void> push() async {
+    setState(() => _spinning = true);
+    List<dynamic> result = await query("upload", [sig, dataHash]);
     inspect(result);
-    // data1 = result[0];
-    setState(() {});
-  }
-
-  Future<void> pushn() async {
-    List<dynamic> result = await query("uploadn", []);
-    inspect(result);
-    // data2 = result[0];
-    setState(() {});
+    debugPrint('=========${result.toString()}');
+    setState(() => _spinning = false);
   }
 
   Future<dynamic> popUpDialoge(BuildContext context) {
@@ -228,13 +219,16 @@ class _PublishScreenState extends State<PublishScreen> {
             Text(sig),
             const SizedBox(height: 14),
             Text(
-              result ? "Verified (true)" : "Verified (false)",
+              "Verified ($verified)",
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
             Center(
               child: ElevatedButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () {
+                  Navigator.pop(context);
+                  push();
+                },
                 child: const Padding(
                   padding: EdgeInsets.all(11),
                   child: Text('push'),
