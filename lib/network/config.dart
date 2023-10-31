@@ -1,6 +1,6 @@
+import 'package:web3dart/web3dart.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
-import 'package:web3dart/web3dart.dart';
 
 Web3Client ethClient = Web3Client(
   "https://sepolia.infura.io/v3/e13262dbb2d84336b7b999c45469350c",
@@ -22,7 +22,7 @@ Future<List<dynamic>> query(String functionName, List<dynamic> args) async {
 Future<DeployedContract> loadContract() async {
   String abi = await rootBundle.loadString("assets/abi.json");
   String contractAddress =
-      "0x1735019B45B04d753Df1334f318200c49b6882a2"; // contract address
+      "0x58538a68a97776d1e87BcCC7FCC7C96382D7Ca7E"; // contract address
   final contract = DeployedContract(
     ContractAbi.fromJson(abi, "Intuition"),
     EthereumAddress.fromHex(contractAddress),
