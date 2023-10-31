@@ -1,12 +1,10 @@
 import 'package:degree_verification/network/keys.dart';
 import 'package:ecdsa/ecdsa.dart';
-// import 'package:ecdsa/ecdsa.dart';
 import 'package:flutter/material.dart';
 import 'package:degree_verification/network/config.dart';
 import 'package:degree_verification/components/custom_ui.dart';
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
-// import 'package:elliptic/elliptic.dart';
 import 'dart:developer';
 
 class PublishScreen extends StatefulWidget {
