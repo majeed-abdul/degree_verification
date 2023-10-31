@@ -22,7 +22,7 @@ Future<List<dynamic>> query(String functionName, List<dynamic> args) async {
 Future<DeployedContract> loadContract() async {
   String abi = await rootBundle.loadString("assets/abi.json");
   String contractAddress =
-      "0x58538a68a97776d1e87BcCC7FCC7C96382D7Ca7E"; // contract address
+      "0xa95A47931D8eb7cBd3Bfe800b932823F822615fa"; // contract address
   final contract = DeployedContract(
     ContractAbi.fromJson(abi, "Intuition"),
     EthereumAddress.fromHex(contractAddress),
