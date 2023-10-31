@@ -34,6 +34,7 @@ class _PublishScreenState extends State<PublishScreen> {
   TextEditingController controllerTotalCgpa = TextEditingController();
   late String finalText;
   late String dataHash;
+  late bool result;
   late String sig;
   @override
   Widget build(BuildContext context) {
@@ -152,9 +153,8 @@ class _PublishScreenState extends State<PublishScreen> {
                         dataHash.length ~/ 2,
                         (i) => int.parse(dataHash.substring(i * 2, i * 2 + 2),
                             radix: 16));
-                    String sig = signature(privKey, hash).toString();
-                    // var result =
-                    //     verify(pubKey, hash, Signature.fromASN1Hex(sig));
+                    sig = signature(privKey, hash).toString();
+                    result = verify(pubKey, hash, Signature.fromASN1Hex(sig));
                     // debugPrint(result.toString());
                     debugPrint(sig.toString());
                     popUpDialoge(context);
@@ -220,6 +220,19 @@ class _PublishScreenState extends State<PublishScreen> {
             ),
             SelectableText(dataHash),
             const SizedBox(height: 14),
+            const Text(
+              'Signature:',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.left,
+            ),
+            Text(sig),
+            const SizedBox(height: 14),
+            Text(
+              result ? "Verified (true)" : "Verified (false)",
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
             const SizedBox(height: 10),
             Center(
               child: ElevatedButton(
