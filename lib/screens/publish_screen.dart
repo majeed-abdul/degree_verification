@@ -31,6 +31,7 @@ class _PublishScreenState extends State<PublishScreen> {
   late String finalText;
   late String dataHash;
   late bool verified;
+  late String txHash;
   late String sig;
   @override
   Widget build(BuildContext context) {
@@ -170,9 +171,28 @@ class _PublishScreenState extends State<PublishScreen> {
 
   Future<void> push() async {
     setState(() => _spinning = true);
-    List<dynamic> result = await query("upload", [sig, dataHash]);
-    inspect(result);
-    debugPrint('=========${result.toString()}');
+    try {
+      var bigAmount = BigInt.from(123);
+      txHash = await submit("upload", [bigAmount])
+          .then((value) => showSnackBar(context, value));
+      // inspect(txHash);
+    } catch (e) {
+      debugPrint('===== errorCatched ===== ${e.toString()}');
+      showSnackBar(context, e.toString());
+    }
+    setState(() => _spinning = false);
+  }
+
+  Future<void> get() async {
+    setState(() => _spinning = true);
+    try {
+      List<dynamic> result = await query("download", [])
+          .then((value) => showSnackBar(context, value[0]));
+      inspect(result[0]);
+    } catch (e) {
+      debugPrint('===== errorCatched ===== ${e.toString()}');
+      showSnackBar(context, e.toString());
+    }
     setState(() => _spinning = false);
   }
 
