@@ -1,5 +1,7 @@
+import 'package:degree_verification/screens/get_event_screen.dart';
 import 'package:degree_verification/screens/home_screen.dart';
 import 'package:degree_verification/screens/publish_screen.dart';
+import 'package:degree_verification/screens/verify_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -21,6 +23,8 @@ class MyApp extends StatelessWidget {
       routes: {
         HomePage.id: (context) => const HomePage(),
         PublishScreen.id: (context) => const PublishScreen(),
+        VerifyScreen.id: (context) => const VerifyScreen(),
+        GetEventScreen.id: (context) => const GetEventScreen(),
       },
     );
   }

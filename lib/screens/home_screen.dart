@@ -1,4 +1,5 @@
 import 'package:degree_verification/network/keys.dart';
+import 'package:degree_verification/screens/get_event_screen.dart';
 import 'package:degree_verification/screens/publish_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -36,10 +37,13 @@ class _HomePageState extends State<HomePage> {
             ),
             const Spacer(),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                // Navigator.pushNamed(context, VerifyScreen.id);
+                Navigator.pushNamed(context, GetEventScreen.id);
+              },
               child: const Padding(
                 padding: EdgeInsets.all(20),
-                child: Text("Verify Degree"),
+                child: Text("Get events from txHash"),
               ),
             ),
             const Spacer(),
