@@ -40,14 +40,17 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             const Spacer(),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, VerifyScreen.id);
-                // Navigator.pushNamed(context, GetEventScreen.id); // Test onnly
-              },
-              child: const Padding(
-                padding: EdgeInsets.all(20),
-                child: Text("Verify Degree"),
+            Visibility(
+              visible: Platform.isAndroid,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, VerifyScreen.id);
+                  // Navigator.pushNamed(context, GetEventScreen.id); // Test onnly
+                },
+                child: const Padding(
+                  padding: EdgeInsets.all(20),
+                  child: Text("Verify Degree"),
+                ),
               ),
             ),
             const Spacer(),

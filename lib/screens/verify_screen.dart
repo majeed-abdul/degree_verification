@@ -130,7 +130,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (BuildContext context) => ResultScreen(result: code),
+        builder: (BuildContext context) => ResultScreen(result: '${code.code}'),
       ),
     ).then((value) => controller?.resumeCamera());
   }
@@ -147,12 +147,6 @@ class _VerifyScreenState extends State<VerifyScreen> {
         borderRadius: BorderRadius.circular(69),
         border: Border.all(color: color, width: 3),
       ),
-      // child: IconButton(
-      //   iconSize: 30,
-      //   icon: icon,
-      //   color: color,
-      //   onPressed: onPress,
-      // ),
       child: GestureDetector(onTap: onPress, child: Icon(icon, color: color)),
     );
   }
