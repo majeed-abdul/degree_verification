@@ -39,7 +39,7 @@ Future<String> submit(String functionName, List<dynamic> args) async {
     chainId: null,
     fetchChainIdFromNetworkId: true,
   );
-  debugPrint(' ===== Tx-Hash: $result');
+  debugPrint('== Tx-Hash: $result');
   return result;
 }
 
@@ -53,11 +53,10 @@ Future<DeployedContract> loadContract() async {
   return contract;
 }
 
-Future<void> getEventsFromTxHash(String txHash) async {
+Future<List<String>> getEventsFromTxHash(String txHash) async {
   final transaction = await ethClient.getTransactionByHash(txHash);
   if (transaction == null) {
-    debugPrint('transaction not found');
-    return;
+    throw 'transaction not found';
   }
   DeployedContract contract = await loadContract();
   final event = contract.event('push');
@@ -68,41 +67,24 @@ Future<void> getEventsFromTxHash(String txHash) async {
     toBlock: BlockNum.exact(transaction.blockNumber.blockNum),
   );
   final events = await ethClient.getLogs(filter);
+  if (events.length == 1) {
+    // debugPrint(' ===== Event in HEX: "${events[0]}"');
 
-  for (var event in events) {
-    debugPrint(' ===== Event: ${event.toString}');
-
-    var hexData = '${event.data}';
+    var hexData = '${events[0].data}';
     if (hexData.startsWith('0x')) {
       hexData = hexData.substring(2);
     }
     List<int> bytes = HEX.decode(hexData);
     String decodedString = String.fromCharCodes(bytes);
-    String signature = decodedString.substring(96, 96 + 142);
-    String dataHash = decodedString.substring(288, 288 + 64);
+    final String sig = decodedString.substring(96, 96 + 142);
+    final String dataHash = decodedString.substring(288, 288 + 64);
 
-    debugPrint(' = EventTopic = ${event.topics}');
-    debugPrint(' ===== Signature: $signature');
-    debugPrint(' ===== Data Hash: $dataHash');
+    debugPrint('\n= EventTopic: ${events[0].topics?[0]!.substring(2, null)}');
+    debugPrint(
+        '== Signature: ${sig.substring(0, 55)}...${sig.substring(sig.length - 5)}');
+    debugPrint('== Data Hash: $dataHash\n');
+    return [dataHash, sig];
+  } else {
+    throw 'unknown transaction found';
   }
 }
-
-// Future<void> getEventLogs() async {
-//   final contractAddress = 'CONTRACT_ADDRESS';
-//   final contract = DeployedContract(
-//     ContractAbi.fromJson(ABI, 'ContractName'),
-//     EthereumAddress.fromHex(contractAddress),
-//   );
-
-//   final filter = FilterOptions.events(
-//     contract: contract,
-//     event: 'EventName', // Name of the event you want to filter
-//     fromBlock: BlockNum.exact(1),
-//     toBlock: BlockNum.pending,
-//   );
-
-//   final events = await web3.getLogs(filter);
-//   for (var event in events) {
-//     print('Event: $event');
-//   }
-// }
