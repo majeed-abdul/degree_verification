@@ -1,9 +1,12 @@
-import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:degree_verification/components/custom_ui.dart';
+import 'package:degree_verification/network/config.dart';
+import 'package:degree_verification/network/keys.dart';
+import 'package:ecdsa/ecdsa.dart';
 import 'package:flutter/material.dart';
 
 class ResultScreen extends StatefulWidget {
   const ResultScreen({super.key, required this.result});
-  final Barcode result;
+  final String result;
 
   @override
   State<ResultScreen> createState() => _ResultScreenState();
@@ -11,41 +14,70 @@ class ResultScreen extends StatefulWidget {
 
 class _ResultScreenState extends State<ResultScreen> {
   ScrollController scrollCon = ScrollController();
+  String dataHash = '';
+  String signature = '';
+  String qRdataHash = '';
+  String txHash = '';
+  bool signatuerVerified = false;
+  bool spinning = true;
+  @override
+  void initState() {
+    setStrings();
+    super.initState();
+  }
 
-  String test =
-      'Dear Student Download a research paper having 3 or more impact factors related to software reengineering, write review of said paper and submit it along with downloaded paper on LMS. Review: The need of reengineering is started from 1990s. This happens when users need to shift their data from legacy systems to new systems like web. Reengineering is started from source code of current system and ends with source code of new system. And it can be easily done with translation tools it becomes very complex, when we need to change some design factor s and architecture.';
+  @override
+  void didChangeDependencies() {
+    getData();
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        elevation: 0,
-        centerTitle: true,
-        title: const Text('Result'),
-      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.pop(context),
         child: const Icon(Icons.qr_code_scanner_outlined, size: 30),
       ),
-      body: SingleChildScrollView(
-        controller: scrollCon,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const Text(
-                'Text',
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
+      body: Spinner(
+        spinning: spinning,
+        child: SafeArea(
+          child: SingleChildScrollView(
+            controller: scrollCon,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const SizedBox(height: 10),
+                  const Text(
+                    'Verifacation',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 20),
+                  resultText(),
+                  const SizedBox(height: 20),
+                  const Text(
+                    'Result:',
+                    textAlign: TextAlign.left,
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    'Data : ${dataHash == qRdataHash ? 'Verified' : 'Invalid'}',
+                    style: const TextStyle(fontSize: 19),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    'Signature : ${signatuerVerified ? 'Verified' : 'Invalid'}',
+                    style: const TextStyle(fontSize: 19),
+                  ),
+                  const SizedBox(height: 55),
+                ],
               ),
-              const SizedBox(height: 10),
-              resultText(),
-              const SizedBox(height: 20),
-              // buttonsRow(),
-              // buttonsLabelRow(),
-              // const SizedBox(height: 55),
-            ],
+            ),
           ),
         ),
       ),
@@ -73,10 +105,58 @@ class _ResultScreenState extends State<ResultScreen> {
       ),
       width: double.infinity,
       padding: const EdgeInsets.all(9),
-      child: SelectableText(
-        '${widget.result.code}',
-        style: const TextStyle(fontSize: 15),
+      child: Column(
+        children: [
+          const Text(
+            'QR Result',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          ),
+          SelectableText(
+            widget.result,
+            style: const TextStyle(fontSize: 15),
+          ),
+        ],
       ),
     );
+  }
+
+  void getData() async {
+    try {
+      qRdataHash = widget.result.substring(67, null);
+      txHash = widget.result.substring(0, 66);
+      debugPrint('= QR DataHash = $qRdataHash');
+      debugPrint('= QR Tx  Hash = $txHash');
+      List<String> l = await getEventsFromTxHash(txHash);
+      dataHash = l[0];
+      signature = l[1];
+      var hash = List<int>.generate(qRdataHash.length ~/ 2, (i) {
+        return int.parse(
+          qRdataHash.substring(i * 2, i * 2 + 2),
+          radix: 16,
+        );
+      });
+      signatuerVerified = verify(
+        pubKey,
+        hash,
+        Signature.fromASN1Hex(signature),
+      );
+    } catch (e) {
+      debugPrint('= Error Occured');
+    }
+    setState(() {
+      spinning = false;
+    });
+  }
+
+  void setStrings() {
+    try {
+      qRdataHash = widget.result.substring(67, null);
+      txHash = widget.result.substring(0, 66);
+      debugPrint('= QR DataHash = $qRdataHash');
+      debugPrint('= QR Tx  Hash = $txHash');
+    } catch (e) {
+      showSnackBar(context, 'invalid QR scanned');
+      Navigator.pop(context);
+    }
   }
 }
