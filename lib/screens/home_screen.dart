@@ -1,7 +1,8 @@
 import 'package:degree_verification/network/keys.dart';
-import 'package:degree_verification/screens/get_event_screen.dart';
 import 'package:degree_verification/screens/publish_screen.dart';
+import 'package:degree_verification/screens/verify_screen.dart';
 import 'package:flutter/material.dart';
+import 'dart:io';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -26,24 +27,27 @@ class _HomePageState extends State<HomePage> {
           children: [
             const Spacer(flex: 4),
             const Row(),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, PublishScreen.id);
-              },
-              child: const Padding(
-                padding: EdgeInsets.all(20),
-                child: Text("Push to BlockChain"),
+            Visibility(
+              visible: !Platform.isAndroid,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, PublishScreen.id);
+                },
+                child: const Padding(
+                  padding: EdgeInsets.all(20),
+                  child: Text("Push to BlockChain"),
+                ),
               ),
             ),
             const Spacer(),
             ElevatedButton(
               onPressed: () {
-                // Navigator.pushNamed(context, VerifyScreen.id);
-                Navigator.pushNamed(context, GetEventScreen.id);
+                Navigator.pushNamed(context, VerifyScreen.id);
+                // Navigator.pushNamed(context, GetEventScreen.id); // Test onnly
               },
               child: const Padding(
                 padding: EdgeInsets.all(20),
-                child: Text("Get events from txHash"),
+                child: Text("Verify Degree"),
               ),
             ),
             const Spacer(),

@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:degree_verification/screens/result_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
