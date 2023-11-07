@@ -64,7 +64,7 @@ class _HomePageState extends State<HomePage> {
             //     SelectableText(pubKey.toString()),
             //   ],
             // ),
-            const Spacer(flex: 5),
+            const Spacer(flex: 6),
           ],
         ),
       ),
