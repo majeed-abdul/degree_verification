@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
 import 'package:degree_verification/components/custom_ui.dart';
 import 'package:degree_verification/network/config.dart';
 import 'package:degree_verification/network/keys.dart';
@@ -14,10 +17,11 @@ class ResultScreen extends StatefulWidget {
 
 class _ResultScreenState extends State<ResultScreen> {
   ScrollController scrollCon = ScrollController();
-  String dataHash = '';
+  String txDataHash = '';
   String signature = '';
   String qRdataHash = '';
   String txHash = '';
+  String actualDataHash = '';
   bool signatuerVerified = false;
   bool spinning = true;
   @override
@@ -66,12 +70,17 @@ class _ResultScreenState extends State<ResultScreen> {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    'Data : ${dataHash == qRdataHash ? 'Verified' : 'Invalid'}',
+                    'Data : ${txDataHash == qRdataHash ? 'Verified ✔️' : 'Invalid ❌'}',
                     style: const TextStyle(fontSize: 19),
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    'Signature : ${signatuerVerified ? 'Verified' : 'Invalid'}',
+                    'Signature : ${signatuerVerified ? 'Verified ✔️' : 'Invalid ❌'}',
+                    style: const TextStyle(fontSize: 19),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    'Degree data: ${actualDataHash != '' ? txDataHash == actualDataHash ? 'Verified ✔️' : 'Invalid ❌' : 'tap button below'}',
                     style: const TextStyle(fontSize: 19),
                   ),
                   const SizedBox(height: 20),
@@ -133,7 +142,7 @@ class _ResultScreenState extends State<ResultScreen> {
       debugPrint('= QR DataHash = $qRdataHash');
       debugPrint('= QR Tx  Hash = $txHash');
       List<String> l = await getEventsFromTxHash(txHash);
-      dataHash = l[0];
+      txDataHash = l[0];
       signature = l[1];
       var hash = List<int>.generate(qRdataHash.length ~/ 2, (i) {
         return int.parse(
@@ -285,7 +294,12 @@ class _ResultScreenState extends State<ResultScreen> {
               const SizedBox(height: 15),
               Center(
                 child: ElevatedButton(
-                  onPressed: () async {
+                  onPressed: () {
+                    String finalText =
+                        '${controllerName.text.toUpperCase().trim()},${controllerFName.text.toUpperCase().trim()},${controllerDOB.text.trim()},${controllerCourse.text.toUpperCase().trim()},${controllerDegreeNo.text.toUpperCase().trim()},${controllerRegNo.text.toUpperCase().trim()},${controllerInstute.text.toUpperCase().trim()},${controllerCnic.text.trim()},${controllerIssueDate.text.trim()},${controllerObtainedCgpa.text.trim()},${controllerTotalCgpa.text.trim()}';
+                    var bytes = utf8.encode(finalText);
+                    actualDataHash = sha256.convert(bytes).toString();
+                    setState(() {});
                     Navigator.pop(context);
                   },
                   child: const Padding(
