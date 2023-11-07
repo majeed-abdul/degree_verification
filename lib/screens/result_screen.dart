@@ -61,7 +61,7 @@ class _ResultScreenState extends State<ResultScreen> {
                   const SizedBox(height: 20),
                   const Text(
                     'Result:',
-                    textAlign: TextAlign.left,
+                    // textAlign: TextAlign.left,
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 10),
@@ -74,6 +74,12 @@ class _ResultScreenState extends State<ResultScreen> {
                     'Signature : ${signatuerVerified ? 'Verified' : 'Invalid'}',
                     style: const TextStyle(fontSize: 19),
                   ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                      onPressed: () {
+                        popUpVerify(context);
+                      },
+                      child: const Text('Verify actual data')),
                   const SizedBox(height: 55),
                 ],
               ),
@@ -158,5 +164,141 @@ class _ResultScreenState extends State<ResultScreen> {
       showSnackBar(context, 'invalid QR scanned');
       Navigator.pop(context);
     }
+  }
+
+  Future<dynamic> popUpVerify(BuildContext context) {
+    TextEditingController controllerName = TextEditingController();
+    TextEditingController controllerFName = TextEditingController();
+    TextEditingController controllerDOB = TextEditingController();
+    TextEditingController controllerCourse = TextEditingController();
+    TextEditingController controllerDegreeNo = TextEditingController();
+    TextEditingController controllerRegNo = TextEditingController();
+    TextEditingController controllerInstute = TextEditingController();
+    TextEditingController controllerCnic = TextEditingController();
+    TextEditingController controllerIssueDate = TextEditingController();
+    TextEditingController controllerObtainedCgpa = TextEditingController();
+    TextEditingController controllerTotalCgpa = TextEditingController();
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        actionsAlignment: MainAxisAlignment.center,
+        title: const Text(
+          'Enter Degree data',
+          textAlign: TextAlign.center,
+        ),
+        contentPadding:
+            const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+        titlePadding: const EdgeInsets.only(top: 15),
+        content: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            // mainAxisSize: MainAxisSize.min,
+            children: [
+              entryData(
+                text: 'Name',
+                child: TextFormField(
+                  decoration: kDecoration.copyWith(hintText: 'Enter Name'),
+                  controller: controllerName,
+                ),
+              ),
+              entryData(
+                text: 'Father\'s Name',
+                child: TextFormField(
+                  decoration:
+                      kDecoration.copyWith(hintText: "Enter Father's Name"),
+                  controller: controllerFName,
+                ),
+              ),
+              entryData(
+                text: 'Date of Birth',
+                child: TextFormField(
+                  decoration: kDecoration.copyWith(
+                      hintText: 'Use this format "30-01-2023"'),
+                  controller: controllerDOB,
+                ),
+              ),
+              entryData(
+                text: 'Course',
+                child: TextFormField(
+                  decoration:
+                      kDecoration.copyWith(hintText: 'Enter envolved Course'),
+                  controller: controllerCourse,
+                ),
+              ),
+              entryData(
+                text: 'Degree Number',
+                child: TextFormField(
+                  decoration: kDecoration.copyWith(
+                      hintText: 'Enter Degree Seral Number'),
+                  controller: controllerDegreeNo,
+                ),
+              ),
+              entryData(
+                text: 'Regestration Number',
+                child: TextFormField(
+                  decoration:
+                      kDecoration.copyWith(hintText: 'Enter student reg.No'),
+                  controller: controllerRegNo,
+                ),
+              ),
+              entryData(
+                text: 'Instuition',
+                child: TextFormField(
+                  decoration:
+                      kDecoration.copyWith(hintText: 'Enter University Name'),
+                  controller: controllerInstute,
+                ),
+              ),
+              entryData(
+                text: 'CNIC',
+                child: TextFormField(
+                  keyboardType: TextInputType.number,
+                  decoration: kDecoration.copyWith(
+                      hintText: '13 digit national ID card number'),
+                  controller: controllerCnic,
+                ),
+              ),
+              entryData(
+                text: 'Issue Date',
+                child: TextFormField(
+                  decoration: kDecoration.copyWith(
+                      hintText: 'Use this format "30-01-2023"'),
+                  controller: controllerIssueDate,
+                ),
+              ),
+              entryData(
+                text: 'Obtained CGPA',
+                child: TextFormField(
+                  decoration:
+                      kDecoration.copyWith(hintText: 'Use this format "3.00"'),
+                  controller: controllerObtainedCgpa,
+                ),
+              ),
+              entryData(
+                text: 'Total CGPA',
+                child: TextFormField(
+                  decoration:
+                      kDecoration.copyWith(hintText: 'Use this format "4.00"'),
+                  controller: controllerTotalCgpa,
+                ),
+              ),
+              const SizedBox(height: 15),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () async {
+                    Navigator.pop(context);
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.all(11),
+                    child: Text('Verify'),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 15),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

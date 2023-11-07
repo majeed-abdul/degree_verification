@@ -21,6 +21,26 @@ Widget entryBar({
   );
 }
 
+Widget entryData({
+  required Widget child,
+  String? text,
+}) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      const SizedBox(height: 9),
+      Text(
+        '$text :',
+        style: const TextStyle(
+          // height: 1.7,
+          fontSize: 14,
+        ),
+      ),
+      child,
+    ],
+  );
+}
+
 showSnackBar<Widget>(
   BuildContext context,
   String message,
