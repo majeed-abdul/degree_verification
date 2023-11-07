@@ -41,7 +41,7 @@ class _HomePageState extends State<HomePage> {
             ),
             const Spacer(),
             Visibility(
-              visible: Platform.isAndroid,
+              visible: !Platform.isWindows,
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.pushNamed(context, VerifyScreen.id);
@@ -53,18 +53,18 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            const Spacer(),
-            Column(
-              children: [
-                const Text(
-                  "Public Key :",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SelectableText(pubKey.toString()),
-              ],
-            ),
+            // const Spacer(),
+            // Column(
+            //   children: [
+            //     const Text(
+            //       "Public Key :",
+            //       style: TextStyle(
+            //         fontWeight: FontWeight.bold,
+            //       ),
+            //     ),
+            //     SelectableText(pubKey.toString()),
+            //   ],
+            // ),
             const Spacer(flex: 5),
           ],
         ),
