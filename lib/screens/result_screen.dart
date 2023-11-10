@@ -171,15 +171,12 @@ class _ResultScreenState extends State<ResultScreen> {
   void setStrings() {
     try {
       if (widget.result.length != 131) {
-        print('==length');
         throw "error";
       }
       if (widget.result.indexOf(",") != 66) {
-        print('==,');
         throw "error";
       }
       if (widget.result.indexOf("0x") != 0) {
-        print('==0x');
         throw "error";
       }
       qRdataHash = widget.result.substring(67, null);
