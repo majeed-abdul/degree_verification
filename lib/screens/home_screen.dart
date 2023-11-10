@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
             const Spacer(flex: 4),
             const Row(),
             Visibility(
-              visible: !Platform.isAndroid,
+              // visible: !Platform.isAndroid,
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.pushNamed(context, PublishScreen.id);
