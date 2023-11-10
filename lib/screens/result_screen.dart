@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:crypto/crypto.dart';
 import 'package:degree_verification/components/custom_ui.dart';
 import 'package:degree_verification/network/config.dart';
@@ -24,6 +23,7 @@ class _ResultScreenState extends State<ResultScreen> {
   String actualDataHash = '';
   bool signatuerVerified = false;
   bool spinning = true;
+  bool e = false;
   @override
   void initState() {
     setStrings();
@@ -136,6 +136,11 @@ class _ResultScreenState extends State<ResultScreen> {
   }
 
   void getData() async {
+    if (e) {
+      Navigator.pop(context);
+      Navigator.pop(context);
+      showSnackBar(context, 'invalid QR scanned');
+    }
     try {
       qRdataHash = widget.result.substring(67, null);
       txHash = widget.result.substring(0, 66);
@@ -165,15 +170,27 @@ class _ResultScreenState extends State<ResultScreen> {
 
   void setStrings() {
     try {
+      if (widget.result.length != 131) {
+        throw "error";
+      }
+      if (widget.result.indexOf(",") != 67) {
+        throw "error";
+      }
+      if (widget.result.indexOf("0x") != 0) {
+        throw "error";
+      }
       qRdataHash = widget.result.substring(67, null);
       txHash = widget.result.substring(0, 66);
       debugPrint('= QR DataHash = $qRdataHash');
       debugPrint('= QR Tx  Hash = $txHash');
-    } catch (e) {
-      showSnackBar(context, 'invalid QR scanned');
-      Navigator.pop(context);
+    } catch (ex) {
+      setState(() {
+        e = true;
+      });
     }
   }
+
+// 0x7b209959a1677cbab2a6140bb1c0596f5d2503d1c43f3d62596ae75fabe16888,0148c926a43b2cf1d18468350a81d6c7af939903f914ee8ce864c7daefe75ab5
 
   Future<dynamic> popUpVerify(BuildContext context) {
     TextEditingController controllerName = TextEditingController();
