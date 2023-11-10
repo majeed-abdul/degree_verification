@@ -144,8 +144,8 @@ class _ResultScreenState extends State<ResultScreen> {
     try {
       qRdataHash = widget.result.substring(67, null);
       txHash = widget.result.substring(0, 66);
-      debugPrint('= QR DataHash = $qRdataHash');
-      debugPrint('= QR Tx  Hash = $txHash');
+      debugPrint('== QR DataHash = $qRdataHash');
+      debugPrint('== QR Tx  Hash = $txHash');
       List<String> l = await getEventsFromTxHash(txHash);
       txDataHash = l[0];
       signature = l[1];
