@@ -5,7 +5,8 @@ import 'package:http/http.dart';
 import 'package:hex/hex.dart';
 
 var myAddress =
-    '9b1973a1ea2916317aed13b9575d8461125341956048c458bdcf78f9b04735f2';
+    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';// wallet private address
+     
 
 final Client httpClient = Client();
 final Web3Client ethClient = Web3Client(
