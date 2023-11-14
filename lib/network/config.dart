@@ -10,7 +10,7 @@ var myAddress =
 
 final Client httpClient = Client();
 final Web3Client ethClient = Web3Client(
-  "https://sepolia.infura.io/v3/8fb9776787ea4283a449ca99699b5cad",
+  "https://sepolia.infura.io/v3/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",// api key
   httpClient,
 );
 
